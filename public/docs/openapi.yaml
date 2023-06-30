@@ -1,0 +1,1254 @@
+openapi: 3.0.3
+info:
+  title: 'Travel API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://travel-api.test'
+paths:
+  /api/v1/healthcheck:
+    get:
+      summary: Healthcheck
+      operationId: healthcheck
+      description: "Check that the service is up. If everything is okay, you'll get a 200 OK response.\n\nOtherwise, the request will fail with a 400 error, and a response listing the failed services."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: up
+                  services:
+                    database: up
+                    postgresql: up
+                properties:
+                  status:
+                    type: string
+                    example: up
+                    description: 'The status of this API (`up` or `down`).'
+                  services:
+                    type: object
+                    properties:
+                      database:
+                        type: string
+                        example: up
+                      postgresql:
+                        type: string
+                        example: up
+        500:
+          description: 'Service is unhealthy'
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: down
+                  services:
+                    database: up
+                    postgresql: down
+                properties:
+                  status:
+                    type: string
+                    example: down
+                    description: 'The status of this API (`up` or `down`).'
+                  services:
+                    type: object
+                    properties:
+                      database:
+                        type: string
+                        example: up
+                      postgresql:
+                        type: string
+                        example: down
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/travels:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+                      name: 'new travels self'
+                      slug: new-travels
+                      number_of_days: 5
+                      number_of_nights: 4
+                    -
+                      id: 9975ed5e-b6e3-4b17-9d9b-8d19946c4207
+                      name: 'gorgia found you'
+                      slug: gorgia
+                      number_of_days: 13
+                      number_of_nights: 12
+                  links:
+                    first: 'http://travel-api.test/api/v1/travels?page=1'
+                    last: 'http://travel-api.test/api/v1/travels?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        active: false
+                      -
+                        url: 'http://travel-api.test/api/v1/travels?page=1'
+                        label: '1'
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        active: false
+                    path: 'http://travel-api.test/api/v1/travels'
+                    per_page: 15
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+                        name: 'new travels self'
+                        slug: new-travels
+                        number_of_days: 5
+                        number_of_nights: 4
+                      -
+                        id: 9975ed5e-b6e3-4b17-9d9b-8d19946c4207
+                        name: 'gorgia found you'
+                        slug: gorgia
+                        number_of_days: 13
+                        number_of_nights: 12
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+                        name:
+                          type: string
+                          example: 'new travels self'
+                        slug:
+                          type: string
+                          example: new-travels
+                        number_of_days:
+                          type: integer
+                          example: 5
+                        number_of_nights:
+                          type: integer
+                          example: 4
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: 'http://travel-api.test/api/v1/travels?page=1'
+                      last:
+                        type: string
+                        example: 'http://travel-api.test/api/v1/travels?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            active: false
+                          -
+                            url: 'http://travel-api.test/api/v1/travels?page=1'
+                            label: '1'
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: 'http://travel-api.test/api/v1/travels'
+                      per_page:
+                        type: integer
+                        example: 15
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Endpoints
+      security: []
+  '/api/v1/travels/{travel_slug}/tours':
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Travel] 9974bddf-4b34-493d-8285-bd3fe8c8fb1f'
+                  exception: Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                  file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php'
+                  line: 410
+                  trace:
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php'
+                      line: 386
+                      function: prepareException
+                      class: Illuminate\Foundation\Exceptions\Handler
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\nunomaduro\collision\src\Adapters\Laravel\ExceptionHandler.php'
+                      line: 54
+                      function: render
+                      class: Illuminate\Foundation\Exceptions\Handler
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Pipeline.php'
+                      line: 51
+                      function: render
+                      class: NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 185
+                      function: handleException
+                      class: Illuminate\Routing\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                      line: 159
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                      line: 135
+                      function: handleRequest
+                      class: Illuminate\Routing\Middleware\ThrottleRequests
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                      line: 87
+                      function: handleRequestUsingNamedLimiter
+                      class: Illuminate\Routing\Middleware\ThrottleRequests
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Routing\Middleware\ThrottleRequests
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\sanctum\src\Http\Middleware\EnsureFrontendRequestsAreStateful.php'
+                      line: 25
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 141
+                      function: 'Laravel\Sanctum\Http\Middleware\{closure}'
+                      class: Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 116
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\sanctum\src\Http\Middleware\EnsureFrontendRequestsAreStateful.php'
+                      line: 26
+                      function: then
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 116
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                      line: 800
+                      function: then
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                      line: 777
+                      function: runRouteWithinStack
+                      class: Illuminate\Routing\Router
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                      line: 741
+                      function: runRoute
+                      class: Illuminate\Routing\Router
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                      line: 730
+                      function: dispatchToRoute
+                      class: Illuminate\Routing\Router
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                      line: 200
+                      function: dispatch
+                      class: Illuminate\Routing\Router
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 141
+                      function: 'Illuminate\Foundation\Http\{closure}'
+                      class: Illuminate\Foundation\Http\Kernel
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php'
+                      line: 21
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php'
+                      line: 31
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\TransformsRequest
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php'
+                      line: 21
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php'
+                      line: 40
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\TransformsRequest
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\TrimStrings
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ValidatePostSize.php'
+                      line: 27
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\ValidatePostSize
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php'
+                      line: 86
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php'
+                      line: 62
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Http\Middleware\HandleCors
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php'
+                      line: 39
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 180
+                      function: handle
+                      class: Illuminate\Http\Middleware\TrustProxies
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                      line: 116
+                      function: 'Illuminate\Pipeline\{closure}'
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                      line: 175
+                      function: then
+                      class: Illuminate\Pipeline\Pipeline
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                      line: 144
+                      function: sendRequestThroughRouter
+                      class: Illuminate\Foundation\Http\Kernel
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                      line: 299
+                      function: handle
+                      class: Illuminate\Foundation\Http\Kernel
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                      line: 287
+                      function: callLaravelOrLumenRoute
+                      class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                      line: 92
+                      function: makeApiCall
+                      class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                      line: 45
+                      function: makeResponseCall
+                      class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                      line: 35
+                      function: makeResponseCallIfConditionsPass
+                      class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                      line: 209
+                      function: __invoke
+                      class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                      line: 166
+                      function: iterateThroughStrategies
+                      class: Knuckles\Scribe\Extracting\Extractor
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                      line: 95
+                      function: fetchResponses
+                      class: Knuckles\Scribe\Extracting\Extractor
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                      line: 124
+                      function: processRoute
+                      class: Knuckles\Scribe\Extracting\Extractor
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                      line: 71
+                      function: extractEndpointsInfoFromLaravelApp
+                      class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                      line: 49
+                      function: extractEndpointsInfoAndWriteToDisk
+                      class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Commands\GenerateDocumentation.php'
+                      line: 51
+                      function: get
+                      class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                      line: 36
+                      function: handle
+                      class: Knuckles\Scribe\Commands\GenerateDocumentation
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\Util.php'
+                      line: 41
+                      function: 'Illuminate\Container\{closure}'
+                      class: Illuminate\Container\BoundMethod
+                      type: '::'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                      line: 93
+                      function: unwrapIfClosure
+                      class: Illuminate\Container\Util
+                      type: '::'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                      line: 37
+                      function: callBoundMethod
+                      class: Illuminate\Container\BoundMethod
+                      type: '::'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\Container.php'
+                      line: 662
+                      function: call
+                      class: Illuminate\Container\BoundMethod
+                      type: '::'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Console\Command.php'
+                      line: 208
+                      function: call
+                      class: Illuminate\Container\Container
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Command\Command.php'
+                      line: 326
+                      function: execute
+                      class: Illuminate\Console\Command
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Console\Command.php'
+                      line: 178
+                      function: run
+                      class: Symfony\Component\Console\Command\Command
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                      line: 1081
+                      function: run
+                      class: Illuminate\Console\Command
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                      line: 320
+                      function: doRunCommand
+                      class: Symfony\Component\Console\Application
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                      line: 174
+                      function: doRun
+                      class: Symfony\Component\Console\Application
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php'
+                      line: 200
+                      function: run
+                      class: Symfony\Component\Console\Application
+                      type: '->'
+                    -
+                      file: 'D:\files\system development\laravel\travel-agency-api\artisan'
+                      line: 37
+                      function: handle
+                      class: Illuminate\Foundation\Console\Kernel
+                      type: '->'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Travel] 9974bddf-4b34-493d-8285-bd3fe8c8fb1f'
+                  exception:
+                    type: string
+                    example: Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+                  file:
+                    type: string
+                    example: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php'
+                  line:
+                    type: integer
+                    example: 410
+                  trace:
+                    type: array
+                    example:
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php'
+                        line: 386
+                        function: prepareException
+                        class: Illuminate\Foundation\Exceptions\Handler
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\nunomaduro\collision\src\Adapters\Laravel\ExceptionHandler.php'
+                        line: 54
+                        function: render
+                        class: Illuminate\Foundation\Exceptions\Handler
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Pipeline.php'
+                        line: 51
+                        function: render
+                        class: NunoMaduro\Collision\Adapters\Laravel\ExceptionHandler
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 185
+                        function: handleException
+                        class: Illuminate\Routing\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                        line: 159
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                        line: 135
+                        function: handleRequest
+                        class: Illuminate\Routing\Middleware\ThrottleRequests
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Middleware\ThrottleRequests.php'
+                        line: 87
+                        function: handleRequestUsingNamedLimiter
+                        class: Illuminate\Routing\Middleware\ThrottleRequests
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Routing\Middleware\ThrottleRequests
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\sanctum\src\Http\Middleware\EnsureFrontendRequestsAreStateful.php'
+                        line: 25
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 141
+                        function: 'Laravel\Sanctum\Http\Middleware\{closure}'
+                        class: Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 116
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\sanctum\src\Http\Middleware\EnsureFrontendRequestsAreStateful.php'
+                        line: 26
+                        function: then
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 116
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                        line: 800
+                        function: then
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                        line: 777
+                        function: runRouteWithinStack
+                        class: Illuminate\Routing\Router
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                        line: 741
+                        function: runRoute
+                        class: Illuminate\Routing\Router
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Routing\Router.php'
+                        line: 730
+                        function: dispatchToRoute
+                        class: Illuminate\Routing\Router
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                        line: 200
+                        function: dispatch
+                        class: Illuminate\Routing\Router
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 141
+                        function: 'Illuminate\Foundation\Http\{closure}'
+                        class: Illuminate\Foundation\Http\Kernel
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php'
+                        line: 21
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull.php'
+                        line: 31
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\TransformsRequest
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TransformsRequest.php'
+                        line: 21
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\TrimStrings.php'
+                        line: 40
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\TransformsRequest
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\TrimStrings
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\ValidatePostSize.php'
+                        line: 27
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\ValidatePostSize
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance.php'
+                        line: 86
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Http\Middleware\HandleCors.php'
+                        line: 62
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Http\Middleware\HandleCors
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Http\Middleware\TrustProxies.php'
+                        line: 39
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 180
+                        function: handle
+                        class: Illuminate\Http\Middleware\TrustProxies
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Pipeline\Pipeline.php'
+                        line: 116
+                        function: 'Illuminate\Pipeline\{closure}'
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                        line: 175
+                        function: then
+                        class: Illuminate\Pipeline\Pipeline
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Http\Kernel.php'
+                        line: 144
+                        function: sendRequestThroughRouter
+                        class: Illuminate\Foundation\Http\Kernel
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                        line: 299
+                        function: handle
+                        class: Illuminate\Foundation\Http\Kernel
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                        line: 287
+                        function: callLaravelOrLumenRoute
+                        class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                        line: 92
+                        function: makeApiCall
+                        class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                        line: 45
+                        function: makeResponseCall
+                        class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Strategies\Responses\ResponseCalls.php'
+                        line: 35
+                        function: makeResponseCallIfConditionsPass
+                        class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                        line: 209
+                        function: __invoke
+                        class: Knuckles\Scribe\Extracting\Strategies\Responses\ResponseCalls
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                        line: 166
+                        function: iterateThroughStrategies
+                        class: Knuckles\Scribe\Extracting\Extractor
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Extracting\Extractor.php'
+                        line: 95
+                        function: fetchResponses
+                        class: Knuckles\Scribe\Extracting\Extractor
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                        line: 124
+                        function: processRoute
+                        class: Knuckles\Scribe\Extracting\Extractor
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                        line: 71
+                        function: extractEndpointsInfoFromLaravelApp
+                        class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\GroupedEndpoints\GroupedEndpointsFromApp.php'
+                        line: 49
+                        function: extractEndpointsInfoAndWriteToDisk
+                        class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\knuckleswtf\scribe\src\Commands\GenerateDocumentation.php'
+                        line: 51
+                        function: get
+                        class: Knuckles\Scribe\GroupedEndpoints\GroupedEndpointsFromApp
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                        line: 36
+                        function: handle
+                        class: Knuckles\Scribe\Commands\GenerateDocumentation
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\Util.php'
+                        line: 41
+                        function: 'Illuminate\Container\{closure}'
+                        class: Illuminate\Container\BoundMethod
+                        type: '::'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                        line: 93
+                        function: unwrapIfClosure
+                        class: Illuminate\Container\Util
+                        type: '::'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php'
+                        line: 37
+                        function: callBoundMethod
+                        class: Illuminate\Container\BoundMethod
+                        type: '::'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Container\Container.php'
+                        line: 662
+                        function: call
+                        class: Illuminate\Container\BoundMethod
+                        type: '::'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Console\Command.php'
+                        line: 208
+                        function: call
+                        class: Illuminate\Container\Container
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Command\Command.php'
+                        line: 326
+                        function: execute
+                        class: Illuminate\Console\Command
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Console\Command.php'
+                        line: 178
+                        function: run
+                        class: Symfony\Component\Console\Command\Command
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                        line: 1081
+                        function: run
+                        class: Illuminate\Console\Command
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                        line: 320
+                        function: doRunCommand
+                        class: Symfony\Component\Console\Application
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\symfony\console\Application.php'
+                        line: 174
+                        function: doRun
+                        class: Symfony\Component\Console\Application
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php'
+                        line: 200
+                        function: run
+                        class: Symfony\Component\Console\Application
+                        type: '->'
+                      -
+                        file: 'D:\files\system development\laravel\travel-agency-api\artisan'
+                        line: 37
+                        function: handle
+                        class: Illuminate\Foundation\Console\Kernel
+                        type: '->'
+                    items:
+                      type: object
+                      properties:
+                        file:
+                          type: string
+                          example: 'D:\files\system development\laravel\travel-agency-api\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php'
+                        line:
+                          type: integer
+                          example: 386
+                        function:
+                          type: string
+                          example: prepareException
+                        class:
+                          type: string
+                          example: Illuminate\Foundation\Exceptions\Handler
+                        type:
+                          type: string
+                          example: '->'
+      tags:
+        - Endpoints
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date_from:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-06-21T04:02:06'
+                date_to:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-06-21T04:02:06'
+                price_from:
+                  type: number
+                  description: ''
+                  example: 37242575.48821
+                price_to:
+                  type: number
+                  description: ''
+                  example: 2415887.0761
+                sort_by:
+                  type: string
+                  description: 'Must be one of <code>price</code>, <code>name</code>, or <code>ending_date</code>.'
+                  example: price
+                sort_order:
+                  type: string
+                  description: 'Must be one of <code>desc</code> or <code>asc</code>.'
+                  example: desc
+      security: []
+    parameters:
+      -
+        in: path
+        name: travel_slug
+        description: 'The slug of the travel.'
+        example: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+        required: true
+        schema:
+          type: string
+  /api/v1/admin/travels:
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: provident
+                description:
+                  type: string
+                  description: ''
+                  example: ullam
+                number_of_days:
+                  type: integer
+                  description: ''
+                  example: 1
+                is_public:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - name
+                - description
+                - number_of_days
+  '/api/v1/admin/travels/{travel_id}':
+    put:
+      summary: 'Update the specified resource in storage.'
+      operationId: updateTheSpecifiedResourceInStorage
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: ipsa
+                description:
+                  type: string
+                  description: ''
+                  example: ab
+                number_of_days:
+                  type: integer
+                  description: ''
+                  example: 18
+                is_public:
+                  type: boolean
+                  description: ''
+                  example: true
+              required:
+                - name
+                - description
+                - number_of_days
+    parameters:
+      -
+        in: path
+        name: travel_id
+        description: 'The ID of the travel.'
+        example: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+        required: true
+        schema:
+          type: string
+  '/api/v1/admin/travels/{travel_id}/tours':
+    post:
+      summary: "Adding Tours by it's travel"
+      operationId: addingToursByItsTravel
+      description: ''
+      parameters:
+        -
+          in: header
+          name: Authorization
+          description: ''
+          example: 'Bearer {YOUR_AUTH_KEY}'
+          schema:
+            type: string
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: iure
+                starting_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-06-21T04:02:06'
+                ending_date:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2023-06-21T04:02:06'
+                price:
+                  type: number
+                  description: ''
+                  example: 11835.5791
+              required:
+                - name
+                - starting_date
+                - ending_date
+                - price
+    parameters:
+      -
+        in: path
+        name: travel_id
+        description: 'The ID of the travel.'
+        example: 9974bddf-4b34-493d-8285-bd3fe8c8fb1f
+        required: true
+        schema:
+          type: string
+  /api/v1/auth/login:
+    post:
+      summary: Login
+      operationId: login
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: schmeler.shania@example.net
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters. Must not be greater than 16 characters.'
+                  example: 's$J!QgfJ&phV]6.+'
+              required:
+                - email
+                - password
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: ''
+security:
+  -
+    default: []
