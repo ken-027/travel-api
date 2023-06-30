@@ -1,8 +1,6 @@
 <h2>Travel Api</h2>
 
-<p>
-    <img src="https://media.tenor.com/qJ5evVs-_uUAAAAC/coding.gif" alt="coding" />
-</p>
+<img width="100%" src="https://media.tenor.com/qJ5evVs-_uUAAAAC/coding.gif" alt="coding" />
 
 #### Setup your environment
 
